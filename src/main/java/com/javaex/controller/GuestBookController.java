@@ -46,9 +46,7 @@ public class GuestBookController extends HttpServlet {
 			
 			//jsp 한테 html그리기 응답해라 --> 포워드
 			WebUtil.forward(request, response, "/addList.jsp");
-			
-			//RequestDispatcher rd = request.getRequestDispatcher("/addList.jsp");
-			//rd.forward(request, response);
+
 			
 		} else if("insert".equals(action)) {
 			System.out.println("insert: 등록");

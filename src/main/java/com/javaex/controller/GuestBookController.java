@@ -37,11 +37,12 @@ public class GuestBookController extends HttpServlet {
 			//jsp 한테 html그리기 응답해라 --> 포워드
 			WebUtil.forward(request, response, "/addList.jsp");
 			
+			//RequestDispatcher rd = request.getRequestDispatcher("/addList.jsp");
+			//rd.forward(request, response);
+			
 		} else if("insert".equals(action)) {
 			System.out.println("insert: 등록");
-			
-			
-			
+
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
 			String content = request.getParameter("content");
@@ -61,7 +62,7 @@ public class GuestBookController extends HttpServlet {
 			guestbookDao.guestInsert(guestVo);
 			
 			//리다이렉트: 엔터효과를 낸다
-			//WebUtil.redirect(request, response, "guestbook3/gbc?action=list");
+			WebUtil.redirect(request, response, "guestbook3/gbc?action=list");
 		
 			
 		} else if("list".equals(action)) {

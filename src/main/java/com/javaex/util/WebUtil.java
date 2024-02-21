@@ -10,16 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 public class WebUtil {
 
 	// 메소드 - 일반
-	public static void forward(HttpServletRequest request,
-							   HttpServletResponse response,
-							   String path) throws ServletException, IOException {
+	public static void forward(HttpServletRequest request, HttpServletResponse response, String path)
+			throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}
-	
-	public static void redirect(HttpServletRequest requset,
-							    HttpServletResponse response,
-							    String url) throws IOException {
+
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String url)
+			throws IOException {
 		response.sendRedirect(url);
 	}
 }

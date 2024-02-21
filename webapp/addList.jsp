@@ -10,15 +10,15 @@
 	<table border="1" width="540px">
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name=""></td>
+				<td><input type="text" name="name"></td>
 				<td>비밀번호</td>
-				<td><input type="password" name=""></td>
+				<td><input type="password" name="password"></td>
 			</tr>
 			<tr>
-				<td colspan="4"><textarea cols="72" rows="5"></textarea></td>
+				<td colspan="4"><textarea cols="72" rows="5" name="content"></textarea></td>
 			</tr>
 			<tr>
-				<td colspan="4"><button type="">등록</button></td>
+				<td colspan="4"><button type="submit">등록</button></td>
 			</tr>
 		</table>
 	</form>

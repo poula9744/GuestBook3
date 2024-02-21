@@ -1,98 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.javaex.vo.GuestVo"%>
+<%
+	List<GuestVo> guestList = (List<GuestVo>) request.getAttribute("guestList");	
+%>
+<%
+	int id = Integer.parseInt(request.getParameter("no"));
+	String password = request.getParameter("password");
+%>
+
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>jBlog</title>
-<!-- 페이지 공통 사용 -->
-<link href="../../assets/css/pBlog.css" rel="stylesheet">
-<!-- 이 페이지에서만 사용 -->
-<link href="../../assets/css/pMain.css" rel="stylesheet">
+<title>Insert title here</title>
 </head>
-
 <body>
-	<div id="wrap">
-		<div id="header">
-			<h1>정우성의 블로그입니다.</h1>
-			<li id="h-login"><a href="./login.html">로그인</a></li>
-		</div>
-
-		<div id="info">
-			<img src="../../assets/images/spring-logo.jpg">
-			<p>정우성(hijava)님</p>
-		</div>
-
-		<div>
-			<h2>카테고리</h2>
-			<ul>
-				<li>카테고리5</li>
-				<li>카테고리4</li>
-				<li>카테고리3</li>
-				<li>카테고리2</li>
-				<li>카테고리1</li>
-				<li>미분류</li>
-			</ul>
-		</div>
-
-		<div>
-			<p>08.페이징</p>
-			<p>정우성(hijava)님</p>
-			<p>2024-02-18</p>
-		</div>
-
-		<div>
-			<p>When you have faults, do not fear to abandon them.</p>
-			<p>They must often change who would be constant in happiness or
-				wisdom.</p>
-			<p>Age is no guarantee of maturity.</p>
-			<p>Youth isn’t always all it’s touted to be.</p>
-		</div>
-
-		<div>
-			<h3>카테고리의 글</h3>
-			<table>
-				<thead>
-					<tr>
-						<th scope="col"><span class="blind">글 제목</span></th>
-
-						<th scope="col"><span class="blind">작성일</span></th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<tr>
-						<td class="title"><a href="">08.페이징</a></td>
-						<td class="date"><span>2024/02/18</span></td>
-					</tr>
-					<tr>
-						<td class="title"><a href="">07.첨부파일_MultipartResolver</a></td>
-						<td class="date"><span>2024/02/18</span></td>
-					</tr>
-					<tr>
-						<td class="title"><a href="">06.jquery_ajax</a></td>
-						<td class="date"><span>2024/02/18</span></td>
-					</tr>
-					<tr>
-						<td class="title"><a href="">05.javaScript</a></td>
-						<td class="date"><span>2024/02/18</span></td>
-					</tr>
-					<tr>
-						<td class="title"><a href="">04.spring_어플리케이션_아키텍쳐</a></td>
-						<td class="date"><span>2024/02/18</span></td>
-					</tr>
-
-				</tbody>
-			</table>
-		</div>
-
-
-		<div id="footer" class="clearfix">
-			<p>Spring 이야기 is powered by JBlog (c)2020</p>
-		</div>
-	</div>
-
-</body>
-
+	<form action="/guestbook3/gbc" method="get">
+		<table>
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="password"></td>
+				<input type="hidden" name="no" value="<%=id %>">
+				<input type="hidden" name="action" value="delete">
+				<td><button type="submit">삭제</button></td>
+			</tr>
+		</table>
+	</form>
+	
+	<br><br>
+	<a href="/guestbook3/gbc?action=wform">메인으로 돌아가기</a>
 </body>
 </html>

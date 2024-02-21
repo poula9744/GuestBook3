@@ -34,6 +34,16 @@ public class GuestBookController extends HttpServlet {
 		if("wform".equals(action)) {
 			System.out.println("wform: 등록폼");
 			
+			//db사용
+			GuestBookDao guestBookDao = new GuestBookDao();
+			
+			//리스트 가져오기
+			List<GuestVo> guestList = guestBookDao.guestSelect();
+			System.out.println(guestList);
+			
+			// 데이터담기 forward
+			request.setAttribute("guestList", guestList);
+			
 			//jsp 한테 html그리기 응답해라 --> 포워드
 			WebUtil.forward(request, response, "/addList.jsp");
 			
@@ -62,38 +72,46 @@ public class GuestBookController extends HttpServlet {
 			guestbookDao.guestInsert(guestVo);
 			
 			//리다이렉트: 엔터효과를 낸다
-			WebUtil.redirect(request, response, "guestbook3/gbc?action=list");
+			WebUtil.redirect(request, response, "/guestbook3/gbc?action=wform");
 		
 			
-		} else if("list".equals(action)) {
-			System.out.println("list: 리스트");
-			
-			//db사용
-			GuestBookDao guestBookDao = new GuestBookDao();
-			
-			//리스트 가져오기
-			List<GuestVo> guestList = guestBookDao.guestSelect();
-			System.out.println(guestList);
-			
-			//데이터 담기 --> 포워드
-			request.setAttribute("guestList", guestList);
-			
-			WebUtil.forward(request, response, "guestbook3");
-			
-			
-		} else if("delete".equals(action)) {
+		}  else if("delete".equals(action)) {
 			System.out.println("delete: 삭제");
 			int no = Integer.parseInt(request.getParameter("no"));
+			String password = request.getParameter("password");
 			System.out.println(no);
+			System.out.println(password);
 			
+			//vo로 묶기
+			GuestVo guestVo = new GuestVo(no, password);
+			System.out.println(guestVo.toString());
+
 			//db사용
 			GuestBookDao guestBookDao = new GuestBookDao();
 			
 			//삭제
-			guestBookDao.guestDelete(no);
+			guestBookDao.guestDelete(no, password);
 			
 			//리다이렉트
-			response.sendRedirect("/phonebook3/pbc?action=list");
+			response.sendRedirect("/guestbook3/gbc?action=wform");
+			
+		} else if("dform".equals(action)) {
+			System.out.println("dform: 삭제폼");
+			
+			int no = Integer.parseInt(request.getParameter("no"));
+			
+			//db사용
+			GuestBookDao guestDao = new GuestBookDao();
+			
+			//리스트 가져오기
+			List<GuestVo> guestList = guestDao.guestSelect();
+			
+			//forward
+			request.setAttribute("guestList", guestList);
+			
+			WebUtil.forward(request, response, "/deleteForm.jsp");
+			
+			
 		}
 		
 		

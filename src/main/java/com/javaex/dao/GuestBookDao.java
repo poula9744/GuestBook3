@@ -18,7 +18,7 @@ public class GuestBookDao {
 	// 메소드-일반
 
 	// 수정
-	public void guestUpdate(int no, String name, String hp, String company) {
+	public void guestUpdate(int no, String name, String password, String content) {
 		int count = -1;
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -34,17 +34,18 @@ public class GuestBookDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "";
-			query += " update person ";
+			query += " update guestbook ";
 			query += " set name = ? ";
-			query += " 	  ,hp = ? ";
-			query += " 	  ,company= ? ";
-			query += " where person_id = ? ";
+			query += " 	  ,password = ? ";
+			query += " 	  ,content= ? ";
+			query += " 	  ,reg_date= now() ";
+			query += " where no = ? ";
 
 			// - 바인딩
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
-			pstmt.setString(2, hp);
-			pstmt.setString(3, company);
+			pstmt.setString(2, password);
+			pstmt.setString(3, content);
 			pstmt.setInt(4, no);
 
 			// - 실행
@@ -78,7 +79,7 @@ public class GuestBookDao {
 	}
 
 	// 삭제
-	public int personDelete(int no) {
+	public int guestDelete(int no) {
 		int count = -1;
 
 		// 0. import java.sql.*;
@@ -95,8 +96,8 @@ public class GuestBookDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "";
-			query += " delete from person ";
-			query += " where person_id = ? ";
+			query += " delete from guestbook ";
+			query += " where no = ? ";
 
 			// - 바인딩
 			pstmt = conn.prepareStatement(query);
@@ -132,82 +133,12 @@ public class GuestBookDao {
 		return count;
 	}
 
-	// 일부 가져오기
-	public List<PersonVo> personSelect2(int no) {
-
-		List<PersonVo> personList = new ArrayList<PersonVo>();
-
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/phone_db";
-			conn = DriverManager.getConnection(url, "phone", "1234");
-
-			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "";
-			query += " select person_id, ";
-			query += "        name, ";
-			query += "        hp, ";
-			query += "        company ";
-			query += " from person ";
-			query += " where person_id = ? ";
-
-			// - 바인딩
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, no);
-
-			// - 실행
-			rs = pstmt.executeQuery();
-
-			// 4. 결과처리
-			while (rs.next()) {
-				int personId = rs.getInt("person_id");
-				String name = rs.getString("name");
-				String hp = rs.getString("hp");
-				String company = rs.getString("company");
-
-				PersonVo personVo = new PersonVo(personId, name, hp, company);
-
-				// 리스트에 주소 추가
-				personList.add(personVo);
-
-				System.out.println(personVo);
-			}
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-
-			// 5. 자원정리
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
-		return personList;
-	}
+	
 
 	// 전체 가져오기
-	public List<PersonVo> personSelect() {
+	public List<GuestVo> guestSelect() {
 
-		List<PersonVo> personList = new ArrayList<PersonVo>();
+		List<GuestVo> guestList = new ArrayList<GuestVo>();
 
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -218,16 +149,17 @@ public class GuestBookDao {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/phone_db";
-			conn = DriverManager.getConnection(url, "phone", "1234");
+			String url = "jdbc:mysql://localhost:3306/guestbook_db";
+			conn = DriverManager.getConnection(url, "guest", "1234");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "";
-			query += " select person_id, ";
+			query += " select no, ";
 			query += "        name, ";
-			query += "        hp, ";
-			query += "        company ";
-			query += " from person ";
+			query += "        password, ";
+			query += "        content, ";
+			query += "        reg_date ";
+			query += " from guestbook ";
 
 			// - 바인딩
 			pstmt = conn.prepareStatement(query);
@@ -237,17 +169,18 @@ public class GuestBookDao {
 
 			// 4. 결과처리
 			while (rs.next()) {
-				int personId = rs.getInt("person_id");
+				int no = rs.getInt("no");
 				String name = rs.getString("name");
-				String hp = rs.getString("hp");
-				String company = rs.getString("company");
-
-				PersonVo personVo = new PersonVo(personId, name, hp, company);
+				String password = rs.getString("password");
+				String content = rs.getString("content");
+				String regDate = rs.getString("reg_date");
+				
+				GuestVo guestVo = new GuestVo(no, name, password, content, regDate);
 
 				// 리스트에 주소 추가
-				personList.add(personVo);
+				guestList.add(guestVo);
 
-				System.out.println(personVo);
+				System.out.println(guestVo);
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -271,7 +204,7 @@ public class GuestBookDao {
 				System.out.println("error:" + e);
 			}
 		}
-		return personList;
+		return guestList;
 	}
 
 	// 등록
@@ -284,23 +217,23 @@ public class GuestBookDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			// 1. JDBC 드라이버 (Oracle) 로딩
+			// 1. mJDBC 드라이버 (Oracle) 로딩
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/phone_db";
-			conn = DriverManager.getConnection(url, "phone", "1234");
+			String url = "jdbc:mysql://localhost:3306/guestbook_db";
+			conn = DriverManager.getConnection(url, "guest", "1234");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "";
-			query += " insert into person ";
-			query += " values(null, ?, ?, ?) ";
+			query += " insert into guestbook ";
+			query += " values(null, ?, ?, ?, now()) ";
 
 			// - 바인딩
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, personVo.getName());
-			pstmt.setString(2, personVo.getHp());
-			pstmt.setString(3, personVo.getCompany());
+			pstmt.setString(1, guestVo.getName());
+			pstmt.setString(2, guestVo.getPassword());
+			pstmt.setString(3, guestVo.getContent());
 
 			// - 실행
 			count = pstmt.executeUpdate();

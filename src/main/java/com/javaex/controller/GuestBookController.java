@@ -76,8 +76,8 @@ public class GuestBookController extends HttpServlet {
 		}  else if("delete".equals(action)) {
 			System.out.println("delete: 삭제");
 			int no = Integer.parseInt(request.getParameter("no"));
-			String password = request.getParameter("password");
 			System.out.println(no);
+			String password = request.getParameter("password");
 			System.out.println(password);
 			
 			//vo로 묶기
